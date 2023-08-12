@@ -4,8 +4,9 @@ go 1.20
 
 require (
 	github.com/hashicorp/vault/api v1.9.2
-	github.com/linuxsuren/api-testing v0.0.13-0.20230811100908-d598f8671151
+	github.com/linuxsuren/api-testing v0.0.13-0.20230812000259-e2f2d323f03e
 	github.com/spf13/cobra v1.6.1
+	github.com/stretchr/testify v1.8.4
 	google.golang.org/grpc v1.55.0
 )
 
@@ -55,7 +56,6 @@ require (
 	github.com/signintech/gopdf v0.18.0 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
