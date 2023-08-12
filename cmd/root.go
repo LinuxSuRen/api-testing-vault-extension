@@ -13,7 +13,7 @@ import (
 func NewRootCmd() (cmd *cobra.Command) {
 	opt := &option{}
 	cmd = &cobra.Command{
-		Use:  "secret-vault",
+		Use:  "atest-vault-ext",
 		RunE: opt.runE,
 	}
 	flags := cmd.Flags()
