@@ -62,9 +62,13 @@ func (s *secretClient) DeleteSecret(ctx context.Context, empty *server.Secret) (
 	return
 }
 func (s *secretClient) CreateSecret(ctx context.Context, empty *server.Secret) (reply *server.CommonResult, err error) {
-	secretData := map[string]interface{}{
-		empty.Name: empty.Value,
+	secretData := map[string]interface{}{}
+
+	if secret, findErr := s.client.KVv2(s.mountPath).Get(ctx, s.secretPath); findErr == nil {
+		secretData = secret.Data
 	}
+
+	secretData[empty.Name] = empty.Value
 
 	reply = &server.CommonResult{}
 	_, err = s.client.KVv2(s.mountPath).Put(ctx, s.secretPath, secretData)
