@@ -31,3 +31,11 @@ listener "tcp" {
 Start the server via: `vault server -config=config.hcl`
 
 then, init it: `vault operator init -address=http://127.0.0.1:8200`
+
+## Start API Testing Vault extension
+
+You can start it in Docker:
+
+```shell
+docker run --network host linuxsuren/api-testing-vault-extension:master atest-vault-ext --vault-token your-token --vault-address http://127.0.0.1:8200
+```
