@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"context"
+	"github.com/linuxsuren/api-testing-secret-extension/ui"
 
 	vault "github.com/hashicorp/vault/api"
 	"github.com/linuxsuren/api-testing/pkg/server"
@@ -13,9 +14,15 @@ type secretClient struct {
 	secretPath string
 	client     *vault.Client
 	remote.UnimplementedSecretServiceServer
+	remote.UnimplementedLoaderServer
 }
 
-func NewRemoteServer(address, token string) (server remote.SecretServiceServer, err error) {
+type RemoteServer interface {
+	remote.SecretServiceServer
+	remote.LoaderServer
+}
+
+func NewRemoteServer(address, token string) (server RemoteServer, err error) {
 	config := vault.DefaultConfig()
 	config.Address = address
 
@@ -72,5 +79,34 @@ func (s *secretClient) CreateSecret(ctx context.Context, empty *server.Secret) (
 
 	reply = &server.CommonResult{}
 	_, err = s.client.KVv2(s.mountPath).Put(ctx, s.secretPath, secretData)
+	return
+}
+
+func (s *secretClient) GetMenus(ctx context.Context, empty *server.Empty) (reply *server.MenuList, err error) {
+	reply = &server.MenuList{
+		Data: []*server.Menu{
+			{
+				Name:  "vault",
+				Index: "vault",
+				Icon:  "document",
+			},
+		},
+	}
+	return
+}
+
+func (s *secretClient) GetPageOfJS(ctx context.Context, in *server.SimpleName) (reply *server.CommonResult, err error) {
+	reply = &server.CommonResult{
+		Success: true,
+		Message: ui.GetJS(),
+	}
+	return
+}
+
+func (s *secretClient) GetPageOfCSS(ctx context.Context, in *server.SimpleName) (reply *server.CommonResult, err error) {
+	reply = &server.CommonResult{
+		Success: true,
+		Message: ui.GetCSS(),
+	}
 	return
 }
