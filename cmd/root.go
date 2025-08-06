@@ -24,7 +24,7 @@ func NewRootCmd() (cmd *cobra.Command) {
 }
 
 func (o *option) runE(cmd *cobra.Command, args []string) (err error) {
-	var removeServer remote.SecretServiceServer
+	var removeServer pkg.RemoteServer
 	if removeServer, err = pkg.NewRemoteServer(o.vaultAddress, o.vaultToken); err != nil {
 		return
 	}
@@ -37,6 +37,7 @@ func (o *option) runE(cmd *cobra.Command, args []string) (err error) {
 
 	gRPCServer := grpc.NewServer()
 	remote.RegisterSecretServiceServer(gRPCServer, removeServer)
+	remote.RegisterLoaderServer(gRPCServer, removeServer)
 	cmd.Println("Vault secret extension is running at port", o.port)
 
 	go func() {
